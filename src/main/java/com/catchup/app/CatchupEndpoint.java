@@ -2,7 +2,6 @@ package com.catchup.app;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 import javax.websocket.CloseReason;
@@ -15,15 +14,15 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import org.apache.log4j.Logger;
-
 import com.catchup.carrier.Message;
 import com.catchup.handler.MessageEncoder;
 import com.catchup.handler.ParseMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @ServerEndpoint(value="/{user}",encoders=MessageEncoder.class,decoders=ParseMessage.class)
 public class CatchupEndpoint{
-	private static Logger logger = Logger.getLogger(CatchupEndpoint.class);
+	private static final Logger logger = LogManager.getLogger(CatchupEndpoint.class);
 	private static HashMap<String, Session> sessions = new HashMap<String, Session>();
 	
 	@OnOpen
