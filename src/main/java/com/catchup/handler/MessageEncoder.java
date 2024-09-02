@@ -3,12 +3,10 @@
  */
 package com.catchup.handler;
 
-import javax.json.Json;
-import javax.websocket.EncodeException;
-import javax.websocket.Encoder;
-import javax.websocket.EndpointConfig;
-
 import com.catchup.carrier.Message;
+import jakarta.json.Json;
+import jakarta.websocket.Encoder;
+import jakarta.websocket.EndpointConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +15,6 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class MessageEncoder implements Encoder.Text<Message>{
-	//final static Logger logger = //Logger.getLogger(MessageEncoder.class);
 
 	final static Logger logger = LogManager.getLogger(MessageEncoder.class);
 
@@ -31,7 +28,7 @@ public class MessageEncoder implements Encoder.Text<Message>{
 		
 	}
 
-	public String encode(Message message) throws EncodeException {
+	public String encode(Message message) {
 		logger.debug("Inside message encoder.");
 		return Json.createObjectBuilder().add("content", message.getMessageContent())
 		.add("sender", message.getMessageSender())

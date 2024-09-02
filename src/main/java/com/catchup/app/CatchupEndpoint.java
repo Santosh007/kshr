@@ -4,26 +4,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.websocket.CloseReason;
-import javax.websocket.EncodeException;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
-
 import com.catchup.carrier.Message;
 import com.catchup.handler.MessageEncoder;
 import com.catchup.handler.ParseMessage;
+import jakarta.websocket.*;
+import jakarta.websocket.server.PathParam;
+import jakarta.websocket.server.ServerEndpoint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @ServerEndpoint(value="/{user}",encoders=MessageEncoder.class,decoders=ParseMessage.class)
 public class CatchupEndpoint{
 	private static final Logger logger = LogManager.getLogger(CatchupEndpoint.class);
-	private static HashMap<String, Session> sessions = new HashMap<String, Session>();
+	private static final HashMap<String, Session> sessions = new HashMap<String, Session>();
 	
 	@OnOpen
 	public void joinConversation(Session session,@PathParam("user") String user){
@@ -47,7 +40,6 @@ public class CatchupEndpoint{
 					}
 				}
 			}
-			//session.getBasicRemote().sendText(message);
 		} catch (IOException e) {
 			logger.error("OnMessage methode thrown error"+e.getMessage());
 		} catch (EncodeException e) {
@@ -59,15 +51,7 @@ public class CatchupEndpoint{
 	@OnClose
 	public void  leaveConversation(Session session, 
             CloseReason reason){
-		/*if(session.isOpen()){
-			try {
-				session.close();
-			} catch (IOException e) {
-				logger.error("Session close failed"+e.getMessage());
-				//e.printStackTrace();
-			}
-		}*/
-	sessions.remove(session.getUserProperties().get("user").toString());
+        sessions.remove(session.getUserProperties().get("user").toString());
 	logger.info("Session closed with reason "+reason);
 	}
 	

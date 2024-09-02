@@ -1,8 +1,10 @@
 package com.catchup.carrier;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlRootElement;
+
 
 @XmlRootElement
 public class Buddy implements Serializable{
